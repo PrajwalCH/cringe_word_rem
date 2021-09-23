@@ -1,9 +1,8 @@
+mod rand_num;
+
 use std::io::{BufRead, BufReader};
 use std::fs::File;
 use std::option::Option;
-
-extern crate rand;
-use rand::{thread_rng, Rng};
 
 pub fn start() {
     let words_vec = match read_words_file() {
