@@ -69,7 +69,3 @@ fn shuffle_words_vec_idx_map(words_vec_idx_map: &mut Vec<usize>) {
         words_vec_idx_map[random_index] = last_temp;
     }
 }
-
-fn generate_random_num(max_range: usize) -> usize {
-    thread_rng().gen_range(0..max_range)
-}
