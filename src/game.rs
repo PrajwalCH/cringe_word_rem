@@ -2,8 +2,11 @@ use std::io::{BufRead, BufReader};
 use std::fs::File;
 use std::option::Option;
 
+extern crate rand;
+use rand::{thread_rng, Rng};
+
 pub fn start() {
-    let mut words_vec = match read_words_file() {
+    let words_vec = match read_words_file() {
         Some(vec) => vec,
         None => {
             println!("Failed to read word data file");
