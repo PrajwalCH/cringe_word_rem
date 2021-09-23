@@ -13,8 +13,12 @@ pub fn start() {
         }
     };
 
-    for word in words_vec.iter() {
-        println!("{}", word);
+    let words_vec_idx_map = make_words_vec_idx_map(words_vec.len());
+
+    for i in words_vec_idx_map.iter() {
+        // save current word in game state
+        // copy the current word in game state  and cringe it
+        // ask user to guess and save guess word in game state
     }
 }
 
