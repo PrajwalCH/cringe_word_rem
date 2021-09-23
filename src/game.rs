@@ -5,7 +5,7 @@ use std::fs::File;
 use std::option::Option;
 
 pub fn start() {
-    let words_vec = match read_words_file() {
+    let words_vec = match read_words_from_file() {
         Some(vec) => vec,
         None => {
             println!("Failed to read word data file");
@@ -22,7 +22,7 @@ pub fn start() {
     }
 }
 
-fn read_words_file() -> Option<Vec<String>> {
+fn read_words_from_file() -> Option<Vec<String>> {
     let mut words_vec: Vec<String> = Vec::new();
 
     let file = match File::open("word_dict.txt") {
