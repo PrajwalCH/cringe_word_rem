@@ -25,7 +25,7 @@ pub fn start() {
 fn read_words_from_file() -> Option<Vec<String>> {
     let mut words_vec: Vec<String> = Vec::new();
 
-    let file = match File::open("word_dict.txt") {
+    let file = match File::open("words_data.txt") {
         Ok(f) => f,
         Err(e) => {
             println!("Failed to open file: {:#?}", e);
