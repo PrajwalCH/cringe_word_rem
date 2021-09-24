@@ -1,8 +1,8 @@
-mod rand_num;
-
 use std::io::{BufRead, BufReader};
 use std::fs::File;
 use std::option::Option;
+
+use fastrand;
 
 pub fn start() {
     let words_vec = match read_words_from_file() {
@@ -53,23 +53,6 @@ fn make_words_vec_idx_map(words_vec_len: usize) -> Vec<usize> {
         words_vec_idx_map.push(i);
     }
 
-    shuffle_words_vec_idx_map(&mut words_vec_idx_map);
-
+    fastrand::shuffle(&mut words_vec_idx_map);
     words_vec_idx_map
-}
-
-fn shuffle_words_vec_idx_map(words_vec_idx_map: &mut Vec<usize>) {
-    assert_eq!(words_vec_idx_map.len(), words_vec_idx_map.capacity());
-
-    for i in (0..words_vec_idx_map.len()).rev() {
-        let mut random_index = rand_num::generate(words_vec_idx_map.len());
-
-        if random_index == i {
-            random_index += 1 % words_vec_idx_map.len() - 1;
-        }
-
-        let last_temp = words_vec_idx_map[i];
-        words_vec_idx_map[i] = words_vec_idx_map[random_index];
-        words_vec_idx_map[random_index] = last_temp;
-    }
 }
