@@ -11,7 +11,7 @@ It's a basic game where a word (with shuffled letters) will be given and you hav
     ```bash
     cp/mv words_data.txt $HOME
     ```
-It's important to have the same name and location of file.
+    It's important to have the same name and location of file.
 
 * Finally compile and run
     ```bash
