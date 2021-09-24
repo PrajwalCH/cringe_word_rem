@@ -3,8 +3,6 @@ use std::fs::File;
 use std::option::Option;
 use std::cmp::Ordering;
 
-use fastrand;
-
 #[derive(Eq, PartialEq)]
 enum Command {
     Quit,
