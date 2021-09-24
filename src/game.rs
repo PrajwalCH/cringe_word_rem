@@ -15,10 +15,7 @@ enum Command {
 pub fn start() {
     let mut words_vec = match read_words_from_file() {
         Some(vec) => vec,
-        None => {
-            println!("Failed to read word data file");
-            return
-        }
+        None => return
     };
     fastrand::shuffle(&mut words_vec);
 
@@ -61,10 +58,13 @@ pub fn start() {
 fn read_words_from_file() -> Option<Vec<String>> {
     let mut words_vec: Vec<String> = Vec::new();
 
-    let file = match File::open("words_data.txt") {
+    let file_name = "words_data.txt";
+    let home_path = format!("{}/{}", env!("HOME"), file_name);
+
+    let file = match File::open(&home_path) {
         Ok(f) => f,
-        Err(e) => {
-            println!("Failed to open file: {:#?}", e);
+        Err(_) => {
+            println!("Failed to read words data file");
             return None;
         }
     };
