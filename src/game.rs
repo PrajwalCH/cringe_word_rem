@@ -14,11 +14,11 @@ pub fn start() {
     };
     fastrand::shuffle(&mut words_vec);
 
+    // game loop
     for word in words_vec.iter() {
-        println!("word: {}", word);
-        // save current word in game state
-        // copy the current word in game state  and cringe it
-        // ask user to guess and save guess word in game state
+        let cringe_word = make_cringe_word(&word);
+
+        println!("What is the correct form of '{}'", cringe_word);
     }
 }
 
@@ -44,4 +44,13 @@ fn read_words_from_file() -> Option<Vec<String>> {
     }
 
     Some(words_vec)
+}
+
+fn make_cringe_word(word: &str) -> String {
+    let mut cringe_word: Vec<char> = word.clone().chars().collect();
+    fastrand::shuffle(&mut cringe_word);
+
+    let cringe_word: String = cringe_word.into_iter().collect();
+
+    cringe_word
 }
