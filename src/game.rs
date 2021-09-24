@@ -5,17 +5,17 @@ use std::option::Option;
 use fastrand;
 
 pub fn start() {
-    let words_vec = match read_words_from_file() {
+    let mut words_vec = match read_words_from_file() {
         Some(vec) => vec,
         None => {
             println!("Failed to read word data file");
             return
         }
     };
+    fastrand::shuffle(&mut words_vec);
 
-    let words_vec_idx_map = make_words_vec_idx_map(words_vec.len());
-
-    for i in words_vec_idx_map.iter() {
+    for word in words_vec.iter() {
+        println!("word: {}", word);
         // save current word in game state
         // copy the current word in game state  and cringe it
         // ask user to guess and save guess word in game state
@@ -44,15 +44,4 @@ fn read_words_from_file() -> Option<Vec<String>> {
     }
 
     Some(words_vec)
-}
-
-fn make_words_vec_idx_map(words_vec_len: usize) -> Vec<usize> {
-    let mut words_vec_idx_map: Vec<usize> = Vec::with_capacity(words_vec_len);
-
-    for i in 0..words_vec_len {
-        words_vec_idx_map.push(i);
-    }
-
-    fastrand::shuffle(&mut words_vec_idx_map);
-    words_vec_idx_map
 }
