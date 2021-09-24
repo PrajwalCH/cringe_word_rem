@@ -26,6 +26,7 @@ pub fn start() {
     for word in words_vec.iter() {
         let cringe_word = make_cringe_word(&word);
 
+        println!("");
         println!("What is the correct form of '{}'", cringe_word);
         print!("> ");
 
@@ -45,6 +46,15 @@ pub fn start() {
         }
 
         println!("Your guess: {}", user_guess);
+
+        if word.cmp(&user_guess) != Ordering::Equal {
+            println!("Oops!! you lose");
+            println!("Correct word is '{}'", word);
+            continue;
+        }
+
+        println!("You guess correct!!");
+        println!("Let's play more");
     }
 }
 
