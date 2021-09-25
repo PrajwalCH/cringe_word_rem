@@ -2,7 +2,6 @@ use std::io::{self, BufRead, BufReader, ErrorKind, Write};
 use std::fs::File;
 use std::path::Path;
 
-#[derive(Eq, PartialEq)]
 enum Command {
     Quit,
     Skip,
