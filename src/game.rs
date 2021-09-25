@@ -1,7 +1,7 @@
-use std::io::{self, Write, BufRead, BufReader};
+use std::io::{self, BufRead, BufReader, ErrorKind, Write};
 use std::fs::File;
-use std::option::Option;
 use std::cmp::Ordering;
+use std::path::Path;
 
 #[derive(Eq, PartialEq)]
 enum Command {
@@ -11,10 +11,19 @@ enum Command {
 }
 
 pub fn start() {
-    let mut words_vec = match read_words_from_file() {
-        Some(vec) => vec,
-        None => return
+    let mut words_vec = match read_words_from_file("words_data.txt") {
+        Ok(data) => data,
+        Err(error) => {
+            if error.kind() == ErrorKind::NotFound {
+                println!("Words data not found");
+                return
+            } else {
+                println!("Failed to read words data file");
+                return
+            }
+        }
     };
+
     fastrand::shuffle(&mut words_vec);
 
     // game loop
@@ -53,31 +62,24 @@ pub fn start() {
     }
 }
 
-fn read_words_from_file() -> Option<Vec<String>> {
-    let mut words_vec: Vec<String> = Vec::new();
+fn read_words_from_file(file_name: &str) -> io::Result<Vec<String>> {
+    let home_path = Path::new(option_env!("HOME").unwrap_or("."));
+    let file_path = home_path.join(file_name);
 
-    let file_name = "words_data.txt";
-    let home_path = format!("{}/{}", env!("HOME"), file_name);
-
-    let file = match File::open(&home_path) {
-        Ok(f) => f,
-        Err(_) => {
-            println!("Failed to read words data file");
-            return None;
-        }
-    };
+    let file = File::open(file_path)?;
     let file = BufReader::new(file);
 
-    for line in file.lines() {
-        let line = line.unwrap();
+    let words_vec: Vec<String> = file.lines()
+        .filter_map(|line| line.ok())
+        .filter_map(|line| {
+            if !line.is_empty() {
+                Some(line)
+            } else {
+                None
+            }
+        }).collect();
 
-        if line.trim().len() == 0 {
-            continue;
-        }
-        words_vec.push(line);
-    }
-
-    Some(words_vec)
+    Ok(words_vec)
 }
 
 fn make_cringe_word(word: &str) -> String {
