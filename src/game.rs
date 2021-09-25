@@ -83,12 +83,10 @@ fn read_words_from_file(file_name: &str) -> io::Result<Vec<String>> {
 }
 
 fn make_cringe_word(word: &str) -> String {
-    let mut cringe_word: Vec<char> = word.clone().chars().collect();
+    let mut cringe_word: Vec<char> = word.chars().collect();
     fastrand::shuffle(&mut cringe_word);
 
-    let cringe_word: String = cringe_word.into_iter().collect();
-
-    cringe_word
+    cringe_word.iter().collect()
 }
 
 fn take_user_guess() -> String {
