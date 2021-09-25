@@ -1,6 +1,4 @@
-use std::io::{self, BufRead, BufReader, ErrorKind, Write};
-use std::fs::File;
-use std::path::Path;
+use std::io::{self, Write};
 
 enum Command {
     Quit,
@@ -8,22 +6,7 @@ enum Command {
     NotFound
 }
 
-pub fn start() {
-    let mut words_vec = match read_words_from_file("words_data.txt") {
-        Ok(data) => data,
-        Err(error) => {
-            if error.kind() == ErrorKind::NotFound {
-                println!("Words data not found");
-                return
-            } else {
-                println!("Failed to read words data file");
-                return
-            }
-        }
-    };
-
-    fastrand::shuffle(&mut words_vec);
-
+pub fn start_loop(words_vec: &Vec<String>) {
     // game loop
     for word in words_vec.iter() {
         print_cringe_word(&word);
@@ -46,25 +29,6 @@ pub fn start() {
     }
 }
 
-fn read_words_from_file(file_name: &str) -> io::Result<Vec<String>> {
-    let home_path = Path::new(option_env!("HOME").unwrap_or("."));
-    let file_path = home_path.join(file_name);
-
-    let file = File::open(file_path)?;
-    let file = BufReader::new(file);
-
-    let words_vec: Vec<String> = file.lines()
-        .filter_map(|line| line.ok())
-        .filter_map(|line| {
-            if !line.is_empty() {
-                Some(line)
-            } else {
-                None
-            }
-        }).collect();
-
-    Ok(words_vec)
-}
 
 fn print_cringe_word(word: &str) {
     let cringe_word = make_cringe_word(&word);
