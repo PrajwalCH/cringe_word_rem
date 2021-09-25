@@ -1,6 +1,5 @@
 use std::io::{self, BufRead, BufReader, ErrorKind, Write};
 use std::fs::File;
-use std::cmp::Ordering;
 use std::path::Path;
 
 #[derive(Eq, PartialEq)]
@@ -28,11 +27,7 @@ pub fn start() {
 
     // game loop
     for word in words_vec.iter() {
-        let cringe_word = make_cringe_word(&word);
-
-        println!("");
-        println!("What is the correct form of '{}'", cringe_word);
-        print!("> ");
+        print_cringe_word(&word);
 
         let user_guess = take_user_guess();
 
@@ -72,6 +67,13 @@ fn read_words_from_file(file_name: &str) -> io::Result<Vec<String>> {
     Ok(words_vec)
 }
 
+fn print_cringe_word(word: &str) {
+    let cringe_word = make_cringe_word(&word);
+
+    println!("");
+    println!("What is the correct form of '{}'", cringe_word);
+}
+
 fn make_cringe_word(word: &str) -> String {
     let mut cringe_word: Vec<char> = word.chars().collect();
     fastrand::shuffle(&mut cringe_word);
@@ -81,6 +83,8 @@ fn make_cringe_word(word: &str) -> String {
 
 fn take_user_guess() -> String {
     let mut user_guess = String::new();
+
+    print!("> ");
 
     io::stdout().flush().unwrap();
     io::stdin().read_line(&mut user_guess).unwrap();
