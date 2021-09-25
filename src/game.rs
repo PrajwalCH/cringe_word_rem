@@ -35,30 +35,20 @@ pub fn start() {
         print!("> ");
 
         let user_guess = take_user_guess();
-        let cmd = is_command(&user_guess);
 
-        if cmd != Command::NotFound {
-            if cmd == Command::Quit {
-                // TODO: update the score (current)
-                break;
-            }
+        match parse_command(&user_guess) {
+            Command::Quit => break,
+            Command::Skip => continue,
+            Command::NotFound => {
+                if user_guess != *word {
+                    println!("Oops!! you guessed wrong");
+                    println!("Correct word is '{}'", word);
+                    continue
+                }
 
-            if cmd == Command::Skip {
-                // TODO: update the score (decrease)
-                continue;
+                println!("You guessed right :)");
             }
         }
-
-        println!("Your guess: {}", user_guess);
-
-        if word.cmp(&user_guess) != Ordering::Equal {
-            println!("Oops!! you lose");
-            println!("Correct word is '{}'", word);
-            continue;
-        }
-
-        println!("You guess correct!!");
-        println!("Let's play more");
     }
 }
 
@@ -98,12 +88,12 @@ fn take_user_guess() -> String {
     user_guess.trim().to_string()
 }
 
-fn is_command(user_guess: &str) -> Command {
-    if user_guess.cmp("quit") == Ordering::Equal {
+fn parse_command(user_guess: &str) -> Command {
+    if user_guess == "quit" {
         return Command::Quit;
     }
 
-    if user_guess.cmp("skip") == Ordering::Equal {
+    if user_guess == "skip" {
         return Command::Skip;
     }
 
