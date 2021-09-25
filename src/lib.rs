@@ -20,11 +20,10 @@ pub fn start() {
                     Err(error) => {
                         if error.kind() == ErrorKind::NotFound {
                             println!("Words data file not found");
-                            break;
                         } else {
                             println!("Failed to read words data file");
-                            break;
                         }
+                        break;
                     }
                };
             },
